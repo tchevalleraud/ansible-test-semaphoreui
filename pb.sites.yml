@@ -46,6 +46,7 @@
       loop: "{{ netbox_paths }}"
       when: item.path not in existing_site_paths
     
-    - name: Debug
+    - name: Debug each site path
       ansible.builtin.debug:
-        msg: "{{ existing_site_paths }}"
+        msg: "Site path: {{ item }}"
+      loop: "{{ existing_site_paths }}"
