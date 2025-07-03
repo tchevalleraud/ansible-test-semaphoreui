@@ -6,7 +6,8 @@
   tasks:
     - name: Test command
       command: >
-        ls -Al
+        ls -Al ./scripts
+
     - name: Run the Python script to retrieve the paths
       command: >
         ./scripts/get_netbox_paths.py
