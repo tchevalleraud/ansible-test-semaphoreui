@@ -4,6 +4,10 @@
   gather_facts: false
 
   tasks:
+    - name: Test
+      command: >
+        chmod +x ./scripts/get_netbox_paths.py
+      
     - name: Run the Python script to retrieve the paths
       command: >
         ./scripts/get_netbox_paths.py
