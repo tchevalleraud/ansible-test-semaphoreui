@@ -46,13 +46,7 @@
       loop: "{{ netbox_paths }}"
       when: item.path not in existing_site_paths
     
-    - name: Delete extra sites
-      tchevalleraud.extremenetworks_xiqse.xiqse_site:
-        site_path: "{{ item.location }}"
-        state: gathered
-        provider:
-          host: "{{ xiqse_host }}"
-          client_id: "{{ xiqse_client }}"
-          client_secret: "{{ xiqse_secret }}"
-          verify: "{{ xiqse_verify }}"
+    - name: Debug
+      debug:
+        msg: {{ item }}
       loop: "{{ existing_site_paths }}"
