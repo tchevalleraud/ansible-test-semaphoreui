@@ -10,7 +10,7 @@
       
     - name: Run the Python script to retrieve the paths
       command: >
-        ./scripts/get_netbox_paths.py
+        python3 ./scripts/get_netbox_paths.py
         --url {{ netbox_url }}
         --token {{ netbox_token }}
       args:
