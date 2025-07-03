@@ -4,17 +4,13 @@
   gather_facts: false
 
   tasks:
-    - name: Test command
-      command: >
-        ls -Al ./scripts
-
     - name: Run the Python script to retrieve the paths
       command: >
         ./scripts/get_netbox_paths.py
         --url {{ netbox_url }}
         --token {{ netbox_token }}
       args:
-        chdir "{{ playbook_dir }}"
+        chdir: "{{ playbook_dir }}"
       register: result
       changed_when: false
     
