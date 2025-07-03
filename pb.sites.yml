@@ -15,7 +15,6 @@
         --token {{ netbox_token }}
       args:
         chdir: "{{ playbook_dir }}"
-      register: result
       changed_when: false
     
     - name: Load paths from JSON file
@@ -31,6 +30,10 @@
           verify: "false"
       register: result
 
-    - name: Debug
+    - name: Debug Netbox
+      debug:
+        msg: "{{ netbox_paths }}"
+
+    - name: Debug Netbox
       debug:
         msg: "{{ result }}"
