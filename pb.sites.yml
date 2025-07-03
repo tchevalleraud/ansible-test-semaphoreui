@@ -48,7 +48,7 @@
     
     - name: Delete extra sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
-        site_path: "{{ item.path }}"
+        site_path: "{{ item.location }}"
         state: absent
         provider:
           host: "{{ xiqse_host }}"
@@ -57,5 +57,5 @@
           verify: "{{ xiqse_verify }}"
       loop: "{{ result.sites }}"
       when:
-        - item.path not in (sites | map(attribute='name') | list)
-        - item.path != "/World"
+        - item.location not in (sites | map(attribute='name') | list)
+        - item.location != "/World"
