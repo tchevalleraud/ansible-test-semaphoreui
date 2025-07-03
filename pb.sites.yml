@@ -47,6 +47,5 @@
       when: item.path not in existing_site_paths
     
     - name: Debug
-      debug:
-        msg: {{ item }}
-      loop: "{{ existing_site_paths }}"
+      ansible.builtin.debug:
+        msg: "{{ existing_site_paths }}"
