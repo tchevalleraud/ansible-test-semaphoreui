@@ -45,3 +45,17 @@
           verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_paths }}"
       when: item.path not in existing_site_paths
+    
+    - name: Delete extra sites
+      tchevalleraud.extremenetworks_xiqse.xiqse_site:
+        site_path: "{{ item.path }}"
+        state: absent
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      loop: "{{ result.sites }}"
+      when:
+        - item.path not in (sites | map(attribute='name') | list)
+        - item.path != "/World"
