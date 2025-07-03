@@ -1,0 +1,24 @@
+---
+- name: Get list of NetBox sites
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Run the Python script to retrieve the paths
+      command: >
+        ./scripts/get_netbox_paths.py
+        --url {{ netbox_url }}
+        --token {{ netbox_token }}
+      args:
+        chdir "{{ playbook_dir }}"
+      register: result
+      changed_when: false
+    
+    - name: Load paths from JSON file
+      set_fact:
+        netbox_paths: "{{ lookup('file', './data/netbox_paths.json') | from_json }}"
+    
+    - name: Debug
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ netbox_paths }}"
