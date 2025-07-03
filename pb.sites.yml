@@ -29,11 +29,19 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "false"
       register: result
-
-    - name: Debug Netbox
-      debug:
-        msg: "{{ netbox_paths }}"
-
-    - name: Debug Netbox
-      debug:
-        msg: "{{ result }}"
+    
+    - name: Extract existing site paths
+      set_fact:
+        existing_site_paths: "{{ result.sites | map(attribute='location') | list }}"
+    
+    - name: Create missing sites
+      tchevalleraud.extremenetworks_xiqse.xiqse_site:
+        site_path: "{{ item.path }}"
+        state: present
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      loop: "{{ netbox_paths }}"
+      when: item.path not in existing_site_paths
