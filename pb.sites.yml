@@ -37,7 +37,7 @@
     - name: Create missing sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
         site_path: "{{ item.path }}"
-        state: gathered
+        state: present
         provider:
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
@@ -49,7 +49,7 @@
     - name: Delete extra sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
         site_path: "{{ item }}"
-        state: gathered
+        state: absent
         provider:
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
