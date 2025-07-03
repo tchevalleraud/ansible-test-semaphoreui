@@ -1,0 +1,8 @@
+- name: Debug info Ansible
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Affiche les variables NetBox
+      debug:
+        msg: "NetBox URL={{ netbox_url }} ; Token={{ netbox_token }}"
