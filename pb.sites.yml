@@ -37,7 +37,7 @@
     - name: Create missing sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
         site_path: "{{ item.path }}"
-        state: present
+        state: gathered
         provider:
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
