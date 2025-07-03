@@ -50,3 +50,5 @@
       ansible.builtin.debug:
         msg: "Site path: {{ item }}"
       loop: "{{ existing_site_paths }}"
+      when:
+        - item != "/World"
