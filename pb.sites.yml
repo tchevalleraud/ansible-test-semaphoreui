@@ -57,5 +57,5 @@
           verify: "{{ xiqse_verify }}"
       loop: "{{ existing_site_paths }}"
       when:
-        - item.location not in (netbox_paths | map(attribute='path') | list)
-        - item.location != "/World"
+        - item not in (netbox_paths | map(attribute='path') | list)
+        - item != "/World"
