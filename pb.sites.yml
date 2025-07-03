@@ -46,9 +46,15 @@
       loop: "{{ netbox_paths }}"
       when: item.path not in existing_site_paths
     
-    - name: Debug each site path
-      ansible.builtin.debug:
-        msg: "Site path: {{ item }}"
+    - name: Delete extra sites
+      tchevalleraud.extremenetworks_xiqse.xiqse_site:
+        site_path: "{{ item }}"
+        state: gathered
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
       loop: "{{ existing_site_paths }}"
       when:
         - item not in (netbox_paths | map(attribute='path') | list)
