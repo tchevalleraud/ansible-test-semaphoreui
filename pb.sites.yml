@@ -102,7 +102,7 @@
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
-        loop: "{{ devices_in_sites_to_delete }}"
+      loop: "{{ devices_in_sites_to_delete }}"
 
     - name: Delete extra sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
