@@ -74,10 +74,6 @@
           verify: "{{ xiqse_verify }}"
       register: xiqse_devices_query
     
-    - name: Show result
-      debug:
-        msg: "{{ xiqse_devices_query }}"
-    
     - name: Filter devices in sites to delete
       set_fact:
         devices_in_sites_to_delete: >-
@@ -87,10 +83,26 @@
             | list
           }}
     
-    - name: Show impacted devices
-      debug:
-        msg: "Device {{ item.ip }} is in site {{ item.sitePath }}"
-      loop: "{{ devices_in_sites_to_delete }}"
+    - name: Delete device if in site
+      tchevalleraud.extremenetworks_xiqse.xiqse_mutation:
+        mutation: |
+          mutation {
+            network {
+              deleteDevices(input: {
+                devices: {
+                  ipAddress: "{{ item.ip }}"
+                }
+              }) {
+                status
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+        loop: "{{ devices_in_sites_to_delete }}"
 
     - name: Delete extra sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
