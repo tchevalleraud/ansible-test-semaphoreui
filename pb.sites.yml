@@ -82,7 +82,7 @@
       set_fact:
         devices_in_sites_to_delete: >-
           {{
-            xiqse_devices_query.data.network.devices
+            xiqse_devices_query.result.data.network.devices
             | selectattr('sitePath', 'in', sites_to_delete)
             | list
           }}
