@@ -55,6 +55,38 @@
             | difference(netbox_paths | map(attribute='path') | list)
             | difference(['/World'])
           }}
+    
+    - name: Get devices from XIQ-SE
+      tchevalleraud.extremenetworks_xiqse.xiqse_query:
+        query: |
+          query {
+            network {
+              devices {
+                ip
+                sitePath
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      register: xiqse_devices_query
+    
+    - name: Filter devices in sites to delete
+      set_fact:
+        devices_in_sites_to_delete: >-
+          {{
+            xiqse_devices_query.data.network.devices
+            | selectattr('sitePath', 'in', sites_to_delete)
+            | list
+          }}
+    
+    - name: Show impacted devices
+      debug:
+        msg: "Device {{ item.ip }} is in site {{ item.sitePath }}"
+      loop: "{{ devices_in_sites_to_delete }}"
 
     - name: Delete extra sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
