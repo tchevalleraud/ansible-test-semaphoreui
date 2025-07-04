@@ -52,7 +52,7 @@
           {{
             existing_site_paths
             | difference(netbox_paths | map(attribute='path') | list)
-            | difference(['/World'])  # don't touch root
+            | difference(['/World'])
           }}
 
     - name: Delete extra sites
