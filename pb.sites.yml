@@ -46,6 +46,15 @@
       loop: "{{ netbox_paths }}"
       when: item.path not in existing_site_paths
     
+    - name: Compute list of sites to delete
+      set_fact:
+        sites_to_delete: >-
+          {{
+            existing_site_paths
+            | difference(netbox_paths | map(attribute='path') | list)
+            | difference(['/World'])  # don't touch root
+          }}
+
     - name: Delete extra sites
       tchevalleraud.extremenetworks_xiqse.xiqse_site:
         site_path: "{{ item }}"
@@ -55,7 +64,4 @@
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
-      loop: "{{ existing_site_paths }}"
-      when:
-        - item not in (netbox_paths | map(attribute='path') | list)
-        - item != "/World"
+      loop: "{{ sites_to_delete }}"
