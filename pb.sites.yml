@@ -74,6 +74,10 @@
           verify: "{{ xiqse_verify }}"
       register: xiqse_devices_query
     
+    - name: Show result
+      debug:
+        msg: "{{ xiqse_devices_query }}"
+    
     - name: Filter devices in sites to delete
       set_fact:
         devices_in_sites_to_delete: >-
