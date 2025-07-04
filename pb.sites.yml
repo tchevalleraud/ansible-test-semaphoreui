@@ -4,7 +4,7 @@
   gather_facts: false
 
   tasks:
-    - name: Test
+    - name: Ensure NetBox script has execute permissions
       command: >
         chmod +x ./scripts/get_netbox_paths.py
       
