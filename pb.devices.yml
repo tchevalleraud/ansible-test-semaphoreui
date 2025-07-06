@@ -23,7 +23,7 @@
         netbox_devices: "{{ lookup('file', './data/netbox_devices.json') | from_json }}"
     
     - name: Retrieve existing devices from XIQ-SE
-      tchevalleraud.extremenetworks_xiqse.query:
+      tchevalleraud.extremenetworks_xiqse.xiqse_query:
         query: |
           query {
             network {
