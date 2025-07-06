@@ -28,7 +28,7 @@
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
-          verify: "false"
+          verify: "{{ xiqse_verify }}"
       register: result
     
     - name: Extract existing site paths

@@ -22,6 +22,27 @@
       set_fact:
         netbox_devices: "{{ lookup('file', './data/netbox_devices.json') | from_json }}"
     
-    - name: Debug devices
+    - name: Retrieve existing devices from XIQ-SE
+      tchevalleraud.extremenetworks_xiqse.query:
+        query: |
+          query {
+            network {
+              devices {
+                ip
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      register: result
+
+    - name: Extract existing device
+      set_fact:
+        existing_devices: "{{ result.result.data.network.devices | map(attribute='ip') | list}}"
+    
+    - name: Debug
       debug:
-        msg: "{{ netbox_devices }}"
+        msg: "{{ existing_devices }}"
