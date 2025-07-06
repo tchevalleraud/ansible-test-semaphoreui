@@ -22,6 +22,10 @@
           verify: "{{ xiqse_verify }}"
       register: xiqse_profiles_response
     
+    - name: Debug
+      debug:
+        msg: "{{ xiqse_profiles_response}}"
+
     - name: Set fact for extracted profile names
       set_fact:
         xiqse_profiles: "{{ xiqse_profiles_response.json.data.administration.profiles | map(attribute='profileName') | list }}"
