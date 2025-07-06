@@ -28,7 +28,7 @@
 
     - name: Set fact for extracted profile names
       set_fact:
-        xiqse_profiles: "{{ xiqse_profiles_response.json.data.administration.profiles | map(attribute='profileName') | list }}"
+        xiqse_profiles: "{{ xiqse_profiles_response.result.data.administration.profiles | map(attribute='profileName') | list }}"
 
     - name: Get current choices from NetBox
       uri:
