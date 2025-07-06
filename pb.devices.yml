@@ -82,7 +82,7 @@
             network {
               deleteDevices(input: {
                 devices: {
-                  ipAddress: "{{ item.ip }}"
+                  ipAddress: "{{ item.mgmt_ip }}"
                 }
               }) {
                 status
