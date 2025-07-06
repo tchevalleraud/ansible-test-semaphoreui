@@ -21,14 +21,18 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       register: xiqse_profiles_response
-    
-    - name: Debug
-      debug:
-        msg: "{{ xiqse_profiles_response}}"
 
     - name: Set fact for extracted profile names
       set_fact:
         xiqse_profiles: "{{ xiqse_profiles_response.result.data.administration.profiles | map(attribute='profileName') | list }}"
+    
+    - name: Filter out unwanted profiles
+      set_fact:
+        xiqse_profiles: >-
+          {{ xiqse_profiles
+            | reject('equalto', '<No Access>')
+            | reject('equalto', '<Ping Only>')
+            | list }}
 
     - name: Get choice sets
       uri:
@@ -44,10 +48,6 @@
           {{ choice_sets.json.results
             | selectattr('name', 'equalto', 'xiqse_profiles')
             | map(attribute='id') | first }}
-    
-    - name: debug
-      debug:
-        msg: "{{ xiqse_profiles }}"
 
     - name: Overwrite NetBox choices with current XIQ-SE profiles
       uri:
