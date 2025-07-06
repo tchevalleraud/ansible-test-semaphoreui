@@ -39,13 +39,13 @@ def build_path_from_site(site, region_dict):
     return path
 
 def get_primary_ip(device):
-    """Extract the primary IP from device if available"""
+    """Extract the primary IP from device if available, without CIDR mask"""
     primary_ip4 = device.get("primary_ip4")
     primary_ip6 = device.get("primary_ip6")
     if primary_ip4:
-        return primary_ip4.get("address")
+        return primary_ip4.get("address").split("/")[0]
     elif primary_ip6:
-        return primary_ip6.get("address")
+        return primary_ip6.get("address").split("/")[0]
     return None
 
 def main():
