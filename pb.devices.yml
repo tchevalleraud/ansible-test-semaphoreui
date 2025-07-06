@@ -119,3 +119,7 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_devices }}"
+    
+    - name: Debug
+      debug:
+        msg: "{{ netbox_devices }}"
