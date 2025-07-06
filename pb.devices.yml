@@ -48,12 +48,11 @@
         mutation: |
           mutation {
             network {
-              configureDevice(input: {
-                deviceConfig: {
-                  ipAddress: "{{ item.mgmt_ip }}"
-                  generalConfig: {
-                    defaultSitePath: "{{ item.path }}"
-                  }
+              createDevices(input: {
+                devices: {
+                  ipAddress: "{{ mgmt_ip }}"
+                  profileName: "VOSS_v2_Profile"
+                  siteLocation: "{{ path }}"
                 }
               }){
                 status
