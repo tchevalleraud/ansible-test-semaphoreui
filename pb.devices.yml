@@ -44,7 +44,26 @@
         existing_devices: "{{ result.result.data.network.devices | map(attribute='ip') | list}}"
     
     - name: Create missing device
-      debug:
-        msg: "Create device {{ item }}"
+      tchevalleraud.extremenetworks_xiqse.xiqse_mutation:
+        mutation: |
+          mutation {
+            network {
+              configureDevice(input: {
+                deviceConfig: {
+                  ipAddress: "{{ item.mgmt_ip }}"
+                  generalConfig: {
+                    defaultSitePath: "{{ item.path }}"
+                  }
+                }
+              }){
+                status
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_devices }}"
       when: item.mgmt_ip not in existing_devices
