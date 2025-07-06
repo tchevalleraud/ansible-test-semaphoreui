@@ -24,4 +24,4 @@
     
     - name: Debug devices
       debug:
-        msg: {{ netbox_devices }}
+        msg: "{{ netbox_devices }}"
