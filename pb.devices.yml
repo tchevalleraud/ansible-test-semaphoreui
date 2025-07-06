@@ -66,3 +66,15 @@
           verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_devices }}"
       when: item.mgmt_ip not in existing_devices
+    
+    - name: Compute list of devices to delete
+      set_fact:
+        devices_to_delete: >-
+          {{
+            existing_devices
+            | difference(netbox_devices | map(attribute='mgmt_ip') | list)
+          }}
+    
+    - name: Debug
+      debug:
+        msg: "{{ devices_to_delete }}"
