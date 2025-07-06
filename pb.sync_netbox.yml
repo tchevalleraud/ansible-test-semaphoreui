@@ -48,3 +48,20 @@
     - name: debug
       debug:
         msg: "{{ xiqse_profiles }}"
+
+    - name: Overwrite NetBox choices with current XIQ-SE profiles
+      uri:
+        url: "{{ netbox_url }}/api/extras/custom-field-choice-sets/{{ xiqse_profile_choiceset_id }}/"
+        method: PATCH
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body: >
+          {
+            "extra_choices": [
+              {% for profile in xiqse_profiles | unique | sort %}
+              ["{{ profile }}", "{{ profile }}"]{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+          }
