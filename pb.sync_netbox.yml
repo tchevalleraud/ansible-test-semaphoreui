@@ -22,24 +22,33 @@
           verify: "{{ xiqse_verify }}"
       register: xiqse_profiles_response
     
-    - name: Debug
-      debug:
-        msg: "{{ xiqse_profiles_response }}"
+    - name: Set fact for extracted profile names
+      set_fact:
+        xiqse_profiles: "{{ xiqse_profiles_response.json.data.administration.profiles | map(attribute='profileName') | list }}"
 
-    - name: Patch NetBox custom field with XIQ-SE profiles
+    - name: Get current choices from NetBox
       uri:
-        url: "{{ netbox_url }}/api/extras/custom-fields/xiqse_profile/"
-        method: PATCH
+        url: "{{ netbox_url }}/api/extras/custom-field-choices/?custom_field=xiqse_profile"
+        method: GET
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+      register: netbox_choices
+
+    - name: Set fact for existing choices in NetBox
+      set_fact:
+        netbox_existing_choices: "{{ netbox_choices.json.results | map(attribute='value') | list }}"
+
+    - name: Create missing choices in NetBox
+      uri:
+        url: "{{ netbox_url }}/api/extras/custom-field-choices/"
+        method: POST
         headers:
           Authorization: "Token {{ netbox_token }}"
           Content-Type: "application/json"
         body_format: json
-        body: >-
-          {
-            "choices": {
-              {% for profile in xiqse_profiles_response.json.data.administration.profiles %}
-              "{{ profile.profileName }}": "{{ profile.profileName }}"{% if not loop.last %},{% endif %}
-              {% endfor %}
-            }
-          }
-      when: xiqse_profiles_response.json.data.administration.profiles is defined
+        body:
+          custom_field: "xiqse_profile"
+          value: "{{ item }}"
+          label: "{{ item }}"
+      loop: "{{ xiqse_profiles }}"
+      when: item not in netbox_existing_choices
