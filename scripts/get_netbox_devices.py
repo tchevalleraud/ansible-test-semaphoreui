@@ -6,17 +6,17 @@ import os
 import sys
 
 def get_devices(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/devices/?limit=1000", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/devices/", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 
 def get_sites(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/sites/?limit=1000", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/sites/", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 
 def get_regions(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/regions/?limit=1000", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/regions/", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 

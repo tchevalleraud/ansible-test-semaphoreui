@@ -50,9 +50,9 @@
             network {
               createDevices(input: {
                 devices: {
-                  ipAddress: "{{ mgmt_ip }}"
+                  ipAddress: "{{ item.mgmt_ip }}"
                   profileName: "VOSS_v2_Profile"
-                  siteLocation: "{{ path }}"
+                  siteLocation: "{{ item.path }}"
                 }
               }){
                 status
