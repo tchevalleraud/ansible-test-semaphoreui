@@ -43,6 +43,8 @@
       set_fact:
         existing_devices: "{{ result.result.data.network.devices | map(attribute='ip') | list}}"
     
-    - name: Debug
+    - name: Create missing device
       debug:
-        msg: "{{ existing_devices }}"
+        msg: "Create device {{ item }}"
+      loop: "{{ netbox_devices }}"
+      when: item.mgmt_ip not in existing_devices
