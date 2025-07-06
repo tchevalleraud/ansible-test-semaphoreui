@@ -39,7 +39,6 @@ def build_path_from_site(site, region_dict):
     return path
 
 def get_primary_ip(device):
-    """Extract the primary IP from device if available, without CIDR mask"""
     primary_ip4 = device.get("primary_ip4")
     primary_ip6 = device.get("primary_ip6")
     if primary_ip4:
@@ -49,7 +48,7 @@ def get_primary_ip(device):
     return None
 
 def main():
-    parser = argparse.ArgumentParser(description="Export NetBox devices with IP and location path")
+    parser = argparse.ArgumentParser(description="Export NetBox devices with IP and path")
     parser.add_argument("--url", help="Base URL of NetBox", default=os.getenv("NETBOX_URL"))
     parser.add_argument("--token", help="NetBox API token", default=os.getenv("NETBOX_TOKEN"))
     parser.add_argument("--output", help="Output file", default="./data/netbox_devices.json")
@@ -82,11 +81,8 @@ def main():
         mgmt_ip = get_primary_ip(device)
 
         output.append({
-            "name": device["name"],
             "id": device["id"],
-            "role": device.get("device_role", {}).get("name"),
-            "site": site["name"],
-            "status": device.get("status", {}).get("label", "Unknown"),
+            "name": device["name"],
             "mgmt_ip": mgmt_ip,
             "path": "/World/" + "/".join(path)
         })
@@ -95,7 +91,7 @@ def main():
     with open(args.output, "w") as f:
         json.dump(sorted(output, key=lambda x: x["path"]), f, indent=2)
 
-    print(f"✔️ Exported {len(output)} devices with management IPs to {args.output}")
+    print(f"✔️ Exported {len(output)} devices to {args.output}")
 
 if __name__ == "__main__":
     main()
