@@ -21,10 +21,6 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       register: xiqse_profiles_response
-    
-    - name: Debug
-      debug:
-        msg: "{{ xiqse_profiles_response}}"
 
     - name: Set fact for extracted profile names
       set_fact:
@@ -38,20 +34,12 @@
           Authorization: "Token {{ netbox_token }}"
       register: choice_sets
     
-    - name: Debug
-      debug:
-        msg: "{{ choice_sets }}"
-    
     - name: Set fact for xiqse_profiles choice set ID
       set_fact:
         xiqse_profile_choiceset_id: >-
           {{ choice_sets.json.results
             | selectattr('name', 'equalto', 'xiqse_profiles')
             | map(attribute='id') | first }}
-    
-    - name: Debug
-      debug:
-        msg: "{{ xiqse_profile_choiceset_id }}"
     
     - name: Set fact with existing profile values in choice set
       set_fact:
