@@ -75,6 +75,23 @@
             | difference(netbox_devices | map(attribute='mgmt_ip') | list)
           }}
     
-    - name: Debug
-      debug:
-        msg: "{{ devices_to_delete }}"
+    - name: Delete device
+      tchevalleraud.extremenetworks_xiqse.xiqse_mutation:
+        mutation: |
+          mutation {
+            network {
+              deleteDevices(input: {
+                devices: {
+                  ipAddress: "{{ item }}"
+                }
+              }) {
+                status
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      loop: "{{ devices_to_delete }}"
