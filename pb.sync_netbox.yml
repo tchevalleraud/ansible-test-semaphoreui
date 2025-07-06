@@ -52,3 +52,25 @@
     - name: Debug
       debug:
         msg: "{{ xiqse_profile_choiceset_id }}"
+    
+    - name: Set fact with existing profile values in choice set
+      set_fact:
+        netbox_existing_profiles: >-
+          {{ choice_sets.json.results
+            | selectattr('name', 'equalto', 'xiqse_profiles')
+            | map(attribute='extra_choices') | first
+            | map('first') | list }}
+    
+    - name: Add missing choices to xiqse_profiles set
+      uri:
+        url: "{{ netbox_url }}/api/extras/custom-field-choice-sets/{{ xiqse_profile_choiceset_id }}/choices/"
+        method: POST
+        headers:
+          Authorization: "Token {{ netbox_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          value: "{{ item }}"
+          label: "{{ item }}"
+      loop: "{{ xiqse_profiles }}"
+      when: item not in netbox_existing_profiles
