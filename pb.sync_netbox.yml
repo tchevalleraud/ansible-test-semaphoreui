@@ -6,7 +6,7 @@
   tasks:
 
     - name: Query XIQ-SE for profiles
-      tchevalleraud.extremenetworks_xiqse.query:
+      tchevalleraud.extremenetworks_xiqse.xiqse_query:
         query: |
           query {
             administration {
