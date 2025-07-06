@@ -21,6 +21,10 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       register: xiqse_profiles_response
+    
+    - name: Debug
+      debug:
+        msg: "{{ xiqse_profiles_response }}"
 
     - name: Patch NetBox custom field with XIQ-SE profiles
       uri:
