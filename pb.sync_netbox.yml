@@ -49,7 +49,7 @@
             | map(attribute='extra_choices') | first
             | map('first') | list }}
     
-    - name: Update xiqse_profiles choice set with all profiles (deduplicated)
+    - name: Overwrite NetBox choices with current XIQ-SE profiles
       uri:
         url: "{{ netbox_url }}/api/extras/custom-field-choice-sets/{{ xiqse_profile_choiceset_id }}/"
         method: PATCH
@@ -60,7 +60,7 @@
         body: >
           {
             "extra_choices": [
-              {% for profile in (netbox_existing_profiles + xiqse_profiles) | unique | sort %}
+              {% for profile in xiqse_profiles | unique | sort %}
               ["{{ profile }}", "{{ profile }}"]{% if not loop.last %},{% endif %}
               {% endfor %}
             ]
