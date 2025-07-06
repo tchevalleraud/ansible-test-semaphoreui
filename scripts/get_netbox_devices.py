@@ -6,17 +6,17 @@ import os
 import sys
 
 def get_devices(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/devices/", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/devices/?limit=1000", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 
 def get_sites(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/sites/", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/sites/?limit=1000", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 
 def get_regions(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/regions/", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/regions/?limit=1000", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 
@@ -48,7 +48,7 @@ def get_primary_ip(device):
     return None
 
 def main():
-    parser = argparse.ArgumentParser(description="Export NetBox devices with IP and path")
+    parser = argparse.ArgumentParser(description="Export NetBox devices with IP, path and custom field")
     parser.add_argument("--url", help="Base URL of NetBox", default=os.getenv("NETBOX_URL"))
     parser.add_argument("--token", help="NetBox API token", default=os.getenv("NETBOX_TOKEN"))
     parser.add_argument("--output", help="Output file", default="./data/netbox_devices.json")
@@ -79,11 +79,13 @@ def main():
 
         path = build_path_from_site(site, region_dict)
         mgmt_ip = get_primary_ip(device)
+        xiqse_profile = device.get("custom_fields", {}).get("xiqse_profile")
 
         output.append({
             "id": device["id"],
             "name": device["name"],
             "mgmt_ip": mgmt_ip,
+            "xiqse_profile": xiqse_profile,
             "path": "/World/" + "/".join(path)
         })
 
