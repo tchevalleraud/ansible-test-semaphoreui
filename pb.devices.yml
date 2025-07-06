@@ -51,7 +51,7 @@
               createDevices(input: {
                 devices: {
                   ipAddress: "{{ item.mgmt_ip }}"
-                  profileName: "VOSS_v2_Profile"
+                  profileName: "{{ item.xiqse_profile }}"
                   siteLocation: "{{ item.path }}"
                 }
               }){
@@ -106,6 +106,7 @@
                   ipAddress: "{{ item.mgmt_ip }}"
                   generalConfig: {
                     defaultSitePath: "{{ item.path }}"
+                    adminProfile: "{{ item.xiqse_profile }}"
                   }
                 }
               }){
@@ -119,7 +120,3 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_devices }}"
-    
-    - name: Debug
-      debug:
-        msg: "{{ netbox_devices }}"
