@@ -95,3 +95,27 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       loop: "{{ devices_to_delete }}"
+    
+    - name: Update device
+      tchevalleraud.extremenetworks_xiqse.xiqse_mutation:
+        mutation: |
+          mutation {
+            network {
+              configureDevice(input: {
+                deviceConfig: {
+                  ipAddress: "{{ item.mgmt_ip }}"
+                  generalConfig: {
+                    defaultSitePath: "{{ item.path }}"
+                  }
+                }
+              }){
+                status
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      loop: "{{ netbox_devices }}"
