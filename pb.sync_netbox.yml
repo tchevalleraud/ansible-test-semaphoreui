@@ -37,14 +37,7 @@
         headers:
           Authorization: "Token {{ netbox_token }}"
       register: choice_sets
-      
-    - name: Set fact for xiqse_profile choice set ID
-      set_fact:
-        xiqse_profile_choiceset_id: >-
-          {{ choice_sets.json.results
-            | selectattr('name', 'equalto', 'xiqse_profile')
-            | map(attribute='id') | first }}
     
     - name: Debug
       debug:
-        msg: "{{ xiqse_profile_choiceset_id }}"
+        msg: "{{ choice_sets }}"
