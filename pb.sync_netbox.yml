@@ -41,3 +41,14 @@
     - name: Debug
       debug:
         msg: "{{ choice_sets }}"
+    
+    - name: Set fact for xiqse_profiles choice set ID
+      set_fact:
+        xiqse_profile_choiceset_id: >-
+          {{ choice_sets.json.results
+            | selectattr('name', 'equalto', 'xiqse_profiles')
+            | map(attribute='id') | first }}
+    
+    - name: Debug
+      debug:
+        msg: "{{ xiqse_profile_choiceset_id }}"
