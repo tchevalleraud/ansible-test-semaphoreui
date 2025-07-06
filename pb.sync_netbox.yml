@@ -32,7 +32,7 @@
 
     - name: Get current choices from NetBox
       uri:
-        url: "{{ netbox_url }}/api/extras/custom-field-choices/?custom_field=xiqse_profile"
+        url: "{{ netbox_url }}/api/extras/custom-field-choices/1/"
         method: GET
         headers:
           Authorization: "Token {{ netbox_token }}"
