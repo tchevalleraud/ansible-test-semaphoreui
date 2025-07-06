@@ -65,7 +65,9 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_devices }}"
-      when: item.mgmt_ip not in existing_devices
+      when:
+        - item.mgmt_ip is not none
+        - item.mgmt_ip not in existing_devices
     
     - name: Compute list of devices to delete
       set_fact:
@@ -120,3 +122,5 @@
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
       loop: "{{ netbox_devices }}"
+      when:
+        - item.mgmt_ip is not none
