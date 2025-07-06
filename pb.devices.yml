@@ -1,0 +1,27 @@
+---
+- name: Get list of NetBox devices
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Ensure Netbox script has execute permissions
+      command: >
+        chmod +x ./scripts/get_netbox_devices.py
+      changed_when: false
+    
+    - name: Run the Python script to retrieve devices
+      command: >
+        python3 ./scripts/get_netbox_devices.py
+        --url {{ netbox_url }}
+        --token {{ netbox_token }}
+      args:
+        chdir: "{{ playbook_dir }}"
+      changed_when: false
+    
+    - name: Load devices from JSON file
+      set_fact:
+        netbox_devices: "{{ lookup('file', './data/netbox_devices.json') | from_json }}"
+    
+    - name: Debug devices
+      debug:
+        msg: {{ netbox_devices }}
