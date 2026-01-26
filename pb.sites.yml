@@ -80,7 +80,6 @@
           {{
             xiqse_devices_query.result.data.network.devices
             | selectattr('sitePath', 'in', sites_to_delete)
-            | rejectattr('sitePath', 'match', '^/World/Onboarding')
             | list
           }}
     

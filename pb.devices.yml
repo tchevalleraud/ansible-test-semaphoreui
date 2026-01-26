@@ -29,6 +29,7 @@
             network {
               devices {
                 ip
+                sitePath
               }
             }
           }
@@ -41,7 +42,7 @@
 
     - name: Extract existing device
       set_fact:
-        existing_devices: "{{ result.result.data.network.devices | map(attribute='ip') | list}}"
+        existing_devices: "{{ result.result.data.network.devices | rejectattr('sitePath', 'equalto', '/World/Onboarding') | map(attribute='ip') | list}}"
     
     - name: Create missing device
       extreme_community.xiqse.xiqse_mutation:
