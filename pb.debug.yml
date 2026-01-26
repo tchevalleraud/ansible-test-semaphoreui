@@ -22,3 +22,4 @@
 
     - name: Show version
       ansible.builtin.debug:
+        msg: "XIQ-SE version: {{ result.version }}"
