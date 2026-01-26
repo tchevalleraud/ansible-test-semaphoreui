@@ -7,19 +7,17 @@
       debug:
         msg: "NetBox URL={{ netbox_url }} ; Token={{ netbox_token }}"
 
-    - name: Affiche la version de XIQ-SE
-      extreme_community.xiqse.query:
-        query: |
-          query {
-            administration {
-              serverInfo {
-                version
-              }
-            }
-          }
+- name: Get XIQ-SE version
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Query version
+      extreme_community.xiqse.xiqse_version:
         provider:
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
-          verify: "{{ xiqse_verify }}"
-        register: result
+      register: result
+
+    - name: Show version
+      ansible.builtin.debug:
