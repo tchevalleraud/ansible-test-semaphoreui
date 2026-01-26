@@ -23,7 +23,7 @@
         netbox_paths: "{{ lookup('file', './data/netbox_paths.json') | from_json }}"
 
     - name: Retrieve existing sites from XIQ-SE
-      tchevalleraud.extremenetworks_xiqse.xiqse_sites:
+      extreme_community.xiqse.xiqse_sites:
         provider:
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
@@ -36,7 +36,7 @@
         existing_site_paths: "{{ result.sites | map(attribute='location') | list }}"
     
     - name: Create missing sites
-      tchevalleraud.extremenetworks_xiqse.xiqse_site:
+      extreme_community.xiqse.xiqse_site:
         site_path: "{{ item.path }}"
         state: present
         provider:
@@ -57,7 +57,7 @@
           }}
     
     - name: Get devices from XIQ-SE
-      tchevalleraud.extremenetworks_xiqse.xiqse_query:
+      extreme_community.xiqse.xiqse_query:
         query: |
           query {
             network {
@@ -84,7 +84,7 @@
           }}
     
     - name: Delete device if in site
-      tchevalleraud.extremenetworks_xiqse.xiqse_mutation:
+      extreme_community.xiqse.xiqse_mutation:
         mutation: |
           mutation {
             network {
@@ -105,7 +105,7 @@
       loop: "{{ devices_in_sites_to_delete }}"
 
     - name: Delete extra sites
-      tchevalleraud.extremenetworks_xiqse.xiqse_site:
+      extreme_community.xiqse.xiqse_site:
         site_path: "{{ item }}"
         state: absent
         provider:
