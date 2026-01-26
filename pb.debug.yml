@@ -6,3 +6,20 @@
     - name: Affiche les variables NetBox
       debug:
         msg: "NetBox URL={{ netbox_url }} ; Token={{ netbox_token }}"
+
+    - name: Affiche la version de XIQ-SE
+      extreme_community.xiqse:
+        query: |
+          query {
+            administration {
+              serverInfo {
+                version
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+        register: result
