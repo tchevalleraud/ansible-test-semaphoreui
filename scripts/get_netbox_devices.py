@@ -6,7 +6,7 @@ import os
 import sys
 
 def get_devices(netbox_url, headers):
-    r = requests.get(f"{netbox_url}/api/dcim/devices/?limit=1000", headers=headers)
+    r = requests.get(f"{netbox_url}/api/dcim/devices/?limit=1000&status=active&status=offline", headers=headers)
     r.raise_for_status()
     return r.json()["results"]
 
