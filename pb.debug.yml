@@ -8,7 +8,7 @@
         msg: "NetBox URL={{ netbox_url }} ; Token={{ netbox_token }}"
 
     - name: Affiche la version de XIQ-SE
-      extreme_community.xiqse:
+      extreme_community.xiqse.query:
         query: |
           query {
             administration {
