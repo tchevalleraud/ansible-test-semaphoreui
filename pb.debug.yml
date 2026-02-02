@@ -38,3 +38,12 @@
       args:
         chdir: "{{ playbook_dir }}"
       changed_when: false
+
+- name: Display device names from NetBox inventory
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Display device hostname
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}"
