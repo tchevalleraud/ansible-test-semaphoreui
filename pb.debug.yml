@@ -70,11 +70,6 @@
       register: xiqse_status
       loop: "{{ groups['all'] }}"
 
-    - name: Display device status
+    - name: Display raw result
       ansible.builtin.debug:
-        msg: >-
-          {{ item.item }} ({{ hostvars[item.item].ansible_host | default('N/A') }})
-          - {{ 'DOWN' if item.data.network.device.down else 'UP' }}
-      loop: "{{ xiqse_status.results }}"
-      loop_control:
-        label: "{{ item.item }}"
+        var: xiqse_status.results[0]
