@@ -66,6 +66,7 @@
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
       register: xiqse_status
       loop: "{{ groups['all'] }}"
 
