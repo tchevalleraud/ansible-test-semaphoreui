@@ -46,4 +46,4 @@
   tasks:
     - name: Display device hostname
       ansible.builtin.debug:
-        msg: "{{ inventory_hostname }}"
+        msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
