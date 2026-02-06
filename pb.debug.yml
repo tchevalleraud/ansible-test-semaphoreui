@@ -47,3 +47,23 @@
     - name: Display device hostname
       ansible.builtin.debug:
         msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
+
+    - name: Query device status from XIQ-SE
+      extreme_community.xiqse.xiqse_query:
+        query: |
+          query {
+            network {
+              device(ip: "{{ ansible_host }}") {
+                down
+              }
+            }
+          }
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+      register: xiqse_status
+
+    - name: Display device status
+      ansible.builtin.debug:
+        msg: xiqse_status
