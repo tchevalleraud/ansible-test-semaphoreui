@@ -70,6 +70,14 @@
       register: xiqse_status
       loop: "{{ groups['all'] }}"
 
-    - name: Display raw result
+    - name: Display device status
       ansible.builtin.debug:
-        var: xiqse_status.results[0]
+        msg: >-
+          {{ item.item }} ({{ hostvars[item.item].ansible_host | default('N/A') }})
+          - {% if item.result.data.network.device is none %}NOT FOUND IN XIQ-SE
+          {%- elif item.result.data.network.device.down %}DOWN
+          {%- else %}UP
+          {%- endif %}
+      loop: "{{ xiqse_status.results }}"
+      loop_control:
+        label: "{{ item.item }}"
