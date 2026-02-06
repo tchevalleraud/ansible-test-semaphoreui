@@ -48,12 +48,16 @@
       ansible.builtin.debug:
         msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
 
+- name: Check device status in XIQ-SE
+  hosts: localhost
+  gather_facts: false
+  tasks:
     - name: Query device status from XIQ-SE
       extreme_community.xiqse.xiqse_query:
         query: |
           query {
             network {
-              device(ip: "{{ ansible_host }}") {
+              device(ip: "{{ hostvars[item].ansible_host }}") {
                 down
               }
             }
@@ -63,7 +67,13 @@
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
       register: xiqse_status
+      loop: "{{ groups['all'] }}"
 
     - name: Display device status
       ansible.builtin.debug:
-        msg: xiqse_status
+        msg: >-
+          {{ item.item }} ({{ hostvars[item.item].ansible_host | default('N/A') }})
+          - {{ 'DOWN' if item.data.network.device.down else 'UP' }}
+      loop: "{{ xiqse_status.results }}"
+      loop_control:
+        label: "{{ item.item }}"
