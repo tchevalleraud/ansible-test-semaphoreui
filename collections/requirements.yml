@@ -5,3 +5,6 @@ collections:
 
   - name: https://github.com/extremenetworks/ansible_collections.extreme_community.xiqse
     type: git
+  
+  - name: https://github.com/extremenetworks/ansible_collections.extreme.fe
+    type: git
