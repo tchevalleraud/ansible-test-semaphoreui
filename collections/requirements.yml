@@ -3,8 +3,8 @@ collections:
   - name: https://github.com/ansible-collections/community.general
     type: git
 
-  - name: https://github.com/extremenetworks/ansible_collections.extreme_community.xiqse
-    type: git
+  #- name: https://github.com/extremenetworks/ansible_collections.extreme_community.xiqse
+  #  type: git
   
-  - name: https://github.com/tchevalleraud/ansible_collections.extreme.fe
+  - name: https://github.com/tchevalleraud/ansible_collections.extreme_community.xiqse
     type: git
