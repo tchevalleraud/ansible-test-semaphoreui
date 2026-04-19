@@ -1,0 +1,27 @@
+- name: Debug info Ansible
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Affiche les variables NetBox
+      debug:
+        msg: "NetBox URL={{ netbox_url }} ; Token={{ netbox_token }}"
+
+- name: Run XIQ-SE Workflow
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run workflow
+      extreme_community.xiqse.xiqse_workflow:
+        path: "/Workflows/WF_TEST"
+        variables:
+          deviceIP: "10.201.100.41"
+        wait: true
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
+      register: result
+    - name: Show workflow
+      ansible.builtin.debug:
+        msg: "XIQ-SE workflow: {{ result }}"
