@@ -10,9 +10,9 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Run workflow WF_TEST
+    - name: Run workflow WF_TEST1
       extreme_community.xiqse.xiqse_workflow:
-        path: "/Workflows/WF_TEST"
+        path: "/Workflows/WF_TEST1"
         variables:
           deviceIP: "10.201.100.41"
         wait: true
