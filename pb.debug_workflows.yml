@@ -21,7 +21,19 @@
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
-      register: result
-    - name: Show workflow
-      ansible.builtin.debug:
-        msg: result
+
+- name: Run XIQ-SE Workflow
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run workflow
+      extreme_community.xiqse.xiqse_workflow:
+        path: "/Workflows/WF_TEST2"
+        variables:
+          deviceIP: "10.201.100.41"
+        wait: true
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
