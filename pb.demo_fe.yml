@@ -4,7 +4,6 @@
   connection: ansible.netcommon.network_cli
 
   vars:
-    ansible_network_os: extreme.fe.extreme_fe
     ansible_user: "rwa"
     ansible_password: "rwa"
     ansible_ssh_common_args: >-
