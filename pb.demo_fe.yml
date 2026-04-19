@@ -1,0 +1,17 @@
+- name: Display device names from NetBox inventory
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Display device hostname
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
+    
+    - name: Activate OpenAPI
+      extreme.fe.extreme_fe_command:
+        commands:
+          - "enable"
+          - "conf t"
+          - "application"
+          - "openapi local-mgmt enable"
+          - "exit"
