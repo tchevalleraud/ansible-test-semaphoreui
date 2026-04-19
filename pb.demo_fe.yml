@@ -27,3 +27,7 @@
           - "application"
           - "openapi local-mgmt enable"
           - "exit"
+    
+    - name: Save running configuration
+      extreme.fe.extreme_fe_save_config:
+        verbose: false
