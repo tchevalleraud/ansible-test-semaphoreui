@@ -2,6 +2,17 @@
   hosts: all
   gather_facts: false
 
+  vars:
+    ansible_network_os: extreme.fe.extreme_fe
+    ansible_user: "rwa"
+    ansible_password: "rwa"
+    ansible_ssh_common_args: >-
+      -o StrictHostKeyChecking=no
+      -o UserKnownHostsFile=/dev/null
+      -o KexAlgorithms=+diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1
+      -o HostKeyAlgorithms=+ssh-rsa
+      -o PubkeyAuthentication=no
+
   tasks:
     - name: Display device hostname
       ansible.builtin.debug:
