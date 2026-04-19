@@ -1,3 +1,12 @@
+- name: Display Netbox
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Display device hostname
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
+
 - name: Display device names from NetBox inventory
   hosts: all
   gather_facts: false
@@ -15,10 +24,6 @@
       -o PubkeyAuthentication=no
 
   tasks:
-    - name: Display device hostname
-      ansible.builtin.debug:
-        msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
-    
     - name: Activate OpenAPI
       extreme.fe.extreme_fe_command:
         commands:
