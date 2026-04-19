@@ -24,4 +24,4 @@
       register: result
     - name: Show workflow
       ansible.builtin.debug:
-        msg: "XIQ-SE workflow: {{ result }}"
+        msg: result
