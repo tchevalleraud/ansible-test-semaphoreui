@@ -8,3 +8,4 @@ collections:
   
   - name: https://github.com/tchevalleraud/ansible_collections.extreme_community.xiqse
     type: git
+    version: main
