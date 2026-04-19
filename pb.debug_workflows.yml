@@ -10,7 +10,7 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Run workflow
+    - name: Run workflow WF_TEST
       extreme_community.xiqse.xiqse_workflow:
         path: "/Workflows/WF_TEST"
         variables:
@@ -21,12 +21,7 @@
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
           verify: "{{ xiqse_verify }}"
-
-- name: Run XIQ-SE Workflow
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Run workflow
+    - name: Run workflow WF_TEST2
       extreme_community.xiqse.xiqse_workflow:
         path: "/Workflows/WF_TEST2"
         variables:
