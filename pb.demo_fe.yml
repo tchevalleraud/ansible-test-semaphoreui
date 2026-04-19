@@ -1,6 +1,7 @@
 - name: Display device names from NetBox inventory
   hosts: all
   gather_facts: false
+  connection: ansible.netcommon.network_cli
 
   vars:
     ansible_network_os: extreme.fe.extreme_fe
