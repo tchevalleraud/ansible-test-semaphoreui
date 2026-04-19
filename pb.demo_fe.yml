@@ -1,21 +1,15 @@
-- name: Display Netbox
-  hosts: all
-  gather_facts: false
-
-  tasks:
-    - name: Display device hostname
-      ansible.builtin.debug:
-        msg: "{{ inventory_hostname }} - {{ ansible_host | default('N/A') }}"
-
-- name: Display device names from NetBox inventory
+---
+- name: Bootstrap - Activer OpenAPI via SSH
   hosts: all
   gather_facts: false
   connection: ansible.netcommon.network_cli
 
   vars:
-    ansible_network_os: voss
+    ansible_network_os: community.network.voss
     ansible_user: "rwa"
     ansible_password: "rwa"
+    ansible_become: true
+    ansible_become_method: enable
     ansible_ssh_common_args: >-
       -o StrictHostKeyChecking=no
       -o UserKnownHostsFile=/dev/null
@@ -24,15 +18,29 @@
       -o PubkeyAuthentication=no
 
   tasks:
-    - name: Activate OpenAPI
-      extreme.fe.extreme_fe_command:
+    - name: Vérifier si OpenAPI est déjà actif
+      community.network.voss_command:
         commands:
-          - "enable"
-          - "conf t"
-          - "application"
-          - "openapi local-mgmt enable"
-          - "exit"
-    
-    - name: Save running configuration
-      extreme.fe.extreme_fe_save_config:
-        verbose: false
+          - show application openapi
+      register: openapi_state
+      ignore_errors: true
+
+    - name: Activer OpenAPI local-mgmt
+      community.network.voss_config:
+        parents:
+          - application
+        lines:
+          - openapi local-mgmt enable
+        save_when: modified
+      when: >
+        openapi_state.stdout is not defined
+        or 'enable' not in (openapi_state.stdout[0] | default('') | lower)
+
+    - name: Confirmer que le port 9443 répond
+      ansible.builtin.wait_for:
+        host: "{{ ansible_host }}"
+        port: 9443
+        timeout: 30
+      delegate_to: localhost
+      vars:
+        ansible_connection: local
