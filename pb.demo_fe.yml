@@ -5,12 +5,12 @@
   connection: ansible.netcommon.network_cli
 
   vars:
-    ansible_connection=httpapi
-    ansible_network_os=extreme.fe.extreme_fe
-    ansible_httpapi_port=9443
-    ansible_httpapi_base_path=/rest/openapi
-    ansible_httpapi_use_ssl=true
-    ansible_httpapi_validate_certs=false
+    ansible_connection: httpapi
+    ansible_network_os: extreme.fe.extreme_fe
+    ansible_httpapi_port: 9443
+    ansible_httpapi_base_path: /rest/openapi
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
     ansible_user: "rwa"
     ansible_password: "rwa"
     ansible_ssh_common_args: >-
@@ -27,6 +27,17 @@
           - show application openapi
       register: openapi_state
       ignore_errors: true
+
+    - name: Activer OpenAPI local-mgmt
+      community.network.voss_config:
+        parents:
+          - application
+        lines:
+          - openapi local-mgmt enable
+        save_when: modified
+      when: >
+        openapi_state.stdout is not defined
+        or 'enable' not in (openapi_state.stdout[0] | default('') | lower)
 
     - name: Confirmer que le port 9443 répond
       ansible.builtin.wait_for:
