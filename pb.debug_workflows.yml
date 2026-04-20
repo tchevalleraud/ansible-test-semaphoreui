@@ -10,7 +10,7 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Test Workflows
+    - name: Execute query
       extreme_community.xiqse.xiqse_query:
       query: |
           query {
