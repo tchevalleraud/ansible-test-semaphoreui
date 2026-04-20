@@ -12,20 +12,20 @@
   tasks:
     - name: Execute query
       extreme_community.xiqse.xiqse_query:
-      query: |
-          query {
-            workflows {
-              allWorkflows {
-                id
-                name
-                path
+        query: |
+            query {
+              workflows {
+                allWorkflows {
+                  id
+                  name
+                  path
+                }
               }
             }
-          }
-      provider:
-        host: "{{ xiqse_host }}"
-        client_id: "{{ xiqse_client }}"
-        client_secret: "{{ xiqse_secret }}"
+        provider:
+          host: "{{ xiqse_host }}"
+          client_id: "{{ xiqse_client }}"
+          client_secret: "{{ xiqse_secret }}"
       register: result
 
     - name: Display result
