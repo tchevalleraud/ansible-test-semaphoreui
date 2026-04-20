@@ -10,6 +10,28 @@
   hosts: localhost
   gather_facts: false
   tasks:
+    - name: Test Workflows
+      extreme_community.xiqse.xiqse_query:
+      query: |
+          query {
+            workflows {
+              allWorkflows {
+                id
+                name
+                path
+              }
+            }
+          }
+      provider:
+        host: "{{ xiqse_host }}"
+        client_id: "{{ xiqse_client }}"
+        client_secret: "{{ xiqse_secret }}"
+      register: result
+
+    - name: Display result
+      ansible.builtin.debug:
+        var: result
+
     - name: Run workflow WF_TEST1
       extreme_community.xiqse.xiqse_workflow:
         path: "/Workflows/WF_TEST1"
