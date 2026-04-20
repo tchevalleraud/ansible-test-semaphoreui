@@ -26,6 +26,7 @@
           host: "{{ xiqse_host }}"
           client_id: "{{ xiqse_client }}"
           client_secret: "{{ xiqse_secret }}"
+          verify: "{{ xiqse_verify }}"
       register: result
 
     - name: Display result
